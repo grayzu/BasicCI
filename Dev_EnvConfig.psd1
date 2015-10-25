@@ -2,7 +2,7 @@
     AllNodes = @(
         @{
             NodeName = "*"
-            SQLServerName    = "Localhost"
+            SQLServerName    = "Localhost" 
         },
         @{
             NodeName         = "local529"

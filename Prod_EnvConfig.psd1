@@ -2,7 +2,7 @@
     AllNodes = @(
         @{
             NodeName = "*"
-            SQLServerName   = "DD-SQL"
+            SQLServerName   = "DD-SQL" 
         },
         @{
             NodeName        = "SQL"
