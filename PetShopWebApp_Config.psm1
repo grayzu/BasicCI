@@ -22,21 +22,20 @@
         #Enable Remove Access to SQL Engine and SQL browser
 	    xFireWall RemoteAccessOnSQLBrowser
         {
-
-            Name = "SqlBrowser"
-            Ensure = "Present"
-            Access = "Allow"
-            State ="Enabled"
+            Name            = "SqlBrowser"
+            Ensure          = "Present"
+            Access          = "Allow"
+            State           ="Enabled"
             ApplicationPath = "c:\Program Files\Microsoft SQL Server\90\Shared\sqlbrowser.exe"
-            Profile = "Any"
+            Profile         = "Any"
         }
 
         xFireWall RemoteAccessOnSQLEngine
         {
-            Name = "SqlServer"
-            Ensure = "Present"
-            Access = "Allow"
-            State ="Enabled"
+            Name            = "SqlServer"
+            Ensure          = "Present"
+            Access          = "Allow"
+            State           = "Enabled"
             ApplicationPath = "c:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Binn\sqlservr.exe"
             Profile = "Any"
         }
@@ -44,13 +43,13 @@
         # Provisioning databases with some pet information
         xRemoteFile PetshopSampleDataScript
         {
-            Uri = $Node.SampleScriptURI
+            Uri             = $Node.SampleScriptURI
             DestinationPath = "c:\programdata\SampleData.sql"
         }
 
         xOSql PetShopSampleData
         {
-            SQLServer = $Node.SQLServerName
+            SQLServer   = $Node.SQLServerName
             SqlUserName = (Import-Clixml .\SQLAdmin.xml).UserName
             SqlPassword = (Import-Clixml .\SQLAdmin.xml).GetNetworkCredential().password
             SQLFilePath = "c:\programdata\SampleData.sql"
@@ -59,8 +58,8 @@
         #Enables sql database caching 
         Script PetShopSQLCacheDependency                       
         {
-            SetScript = $CacheScriptContent
-            GetScript = {@{}} #no easy way to get the sql database cache flag
+            SetScript  = $CacheScriptContent
+            GetScript  = {@{}} #no easy way to get the sql database cache flag
             TestScript = {if(Test-path c:\programdata\CacheScript.txt){if((get-content c:\programdata\CacheScript.txt) -match "Username=OaaS, Password=pass@word1, Database=MSPetShop4"){return $true}else{return $false}}else{return $false}}
         }
    }
@@ -71,29 +70,29 @@
         # Install IIS and  Web Management Tools
         WindowsFeature WebServer
         {
-            Name = "Web-server"
+            Name   = "Web-server"
             Ensure = "Present"
          }
 
         WindowsFeature WebAppDev
         {
-            Name = "Web-Asp-Net45"
+            Name   = "Web-Asp-Net45"
             Ensure = "Present"
          }
 
         WindowsFeature IISManagementTools
         {
-            Name = "Web-Mgmt-Tools"
+            Name   = "Web-Mgmt-Tools"
             Ensure = "Present"
          }
         
         xWebsite Default
         {
-            Ensure = "Present"
-            Name = "Default Web Site"
+            Ensure       = "Present"
+            Name         = "Default Web Site"
             PhysicalPath = "%SystemDrive%\inetpub\wwwroot"
-            State = "Started"
-            BindingInfo = MSFT_xWebBindingInformation
+            State        = "Started"
+            BindingInfo  = MSFT_xWebBindingInformation
                           {
                             Protocol = "HTTP"
                             Port = "8080"
@@ -102,19 +101,19 @@
 
         File WebsiteDirectory
         {
-            Ensure ="Present"
-            Type = "Directory"
+            Ensure          ="Present"
+            Type            = "Directory"
             DestinationPath = "c:\inetpub\MSPetShop"
         }
 
         # IIS server prep. Enabling site remote access
         xWebSite Petshop
         {
-            Ensure = "Present"
-            Name = "MSPetShop"
+            Ensure       = "Present"
+            Name         = "MSPetShop"
             PhysicalPath = "c:\inetpub\MSPetShop"
-            State = "Started"
-            BindingInfo = MSFT_xWebBindingInformation
+            State        = "Started"
+            BindingInfo  = MSFT_xWebBindingInformation
                           {
                             Protocol = "HTTP"
                             Port = "80"
@@ -123,44 +122,44 @@
         
         xFireWall EnableRemoteIISAccess
         {
-            Name = "PetShop_IIS_Port"
-            Ensure = "Present"
-            Access = "Allow"
-            State ="Enabled"
-            Protocol = "TCP"
+            Name      = "PetShop_IIS_Port"
+            Ensure    = "Present"
+            Access    = "Allow"
+            State     = "Enabled"
+            Protocol  = "TCP"
             Direction = "Inbound"
             LocalPort = "80"
-            Profile = "Any"
+            Profile   = "Any"
         }
 
         #Deploys PetShop Web Server in IIS
         Package WebDeployTool
         {
-            Ensure = "Present"
-            Path  = $Node.WebDeployURI
+            Ensure    = "Present"
+            Path      = $Node.WebDeployURI
             ProductId = "{1A81DA24-AF0B-4406-970E-54400D6EC118}"
-            Name = "Microsoft Web Deploy 3.5"
+            Name      = "Microsoft Web Deploy 3.5"
             Arguments = "/quiet"
         }  
         
         xRemoteFile PetshopSource
         {
-            Uri = $Node.WebPackageURI
+            Uri             = $Node.WebPackageURI
             DestinationPath = "c:\data\petshop.zip"
         }
 
         xWebPackageDeploy WebPackage
         {
-            Ensure = "Present"
-            SourcePath = "c:\data\petshop.zip"
+            Ensure      = "Present"
+            SourcePath  = "c:\data\petshop.zip"
             Destination = "MSPetShop"
         }
 
         xFindAndReplace Web2Config
         {
-            FilePath = "C:\inetpub\MSPetShop\web.config"
-            Pattern = "server=.\\TestDSC;"
-            ReplacementString = "server=$($Node.SQLServerName)\;"
+            FilePath           = "C:\inetpub\MSPetShop\web.config"
+            Pattern            = "server=.\\TestDSC;"
+            ReplacementString  = "server=$($Node.SQLServerName)\;"
         }
    }
 }
