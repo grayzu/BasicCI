@@ -9,7 +9,6 @@
 ###########################################################################################
 
 $outputFolder = "C:\DemoScripts\MOF\PetShop_Prod"
-$Cred = Import-Clixml $PSScriptRoot\Admin.xml
 
 # Import the PetShop WebApp Configuration
 Import-Module $PSScriptRoot\PetShopWebApp_Config.psm1
@@ -17,13 +16,9 @@ Import-Module $PSScriptRoot\PetShopWebApp_Config.psm1
 # Generate IL files
 PetShopWebApp -OutputPath $outputFolder -ConfigurationData $PSScriptRoot\Prod_EnvConfig.psd1
 
-###################################################
-#### Configure Azure VMs with Azure Automation ####
-#### Login to AzureRM before calling script    ####
-###################################################
-
+# select subscription
 Get-AzureRMSubscription -SubscriptionName "CI Automation Demo" | Select-AzureRMSubscription
 
-#### Import Node Configurations
-Import-AzureRmAutomationDscNodeConfiguration -Path "$outputFolder\SQL.mof" -ConfigurationName "PetShopWebApp" -ResourceGroupName 'petshopdemo' -AutomationAccountName 'petshop' 
-Import-AzureRmAutomationDscNodeConfiguration -Path "$outputFolder\IIS.mof" -ConfigurationName "PetShopWebApp" -ResourceGroupName 'petshopdemo' -AutomationAccountName 'petshop' 
+# Deploy configurations to Azure Automation: Import Node Configurations
+Import-AzureRmAutomationDscNodeConfiguration -Path "$outputFolder\SQL.mof" -ConfigurationName "PetShopWebApp" -ResourceGroupName 'petshopdemo' -AutomationAccountName 'petshop' -Force
+Import-AzureRmAutomationDscNodeConfiguration -Path "$outputFolder\IIS.mof" -ConfigurationName "PetShopWebApp" -ResourceGroupName 'petshopdemo' -AutomationAccountName 'petshop' -Force

@@ -16,7 +16,7 @@
                         & $appcmd -S .\ -U OaaS -P pass@word1 -d MSPetShop4 -t Item -et; `
                         & $appcmd -S .\ -U OaaS -P pass@word1 -d MSPetShop4 -t Product -et; `
                         & $appcmd -S .\ -U OaaS -P pass@word1 -d MSPetShop4 -t Category -et; `
-                        echo "Database Caching successfully enabled. Username=OaaS, Password=pass@word1, Database=MSPetShop4" >> $env:ALLUSERSPROFILE\CacheScript.txt
+                        echo "Database Caching successfully enabled. Database=MSPetShop4" >> $env:ALLUSERSPROFILE\CacheScript.txt
                       }
 
         #Enable Remove Access to SQL Engine and SQL browser

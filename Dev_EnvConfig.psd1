@@ -2,14 +2,14 @@
     AllNodes = @(
         @{
             NodeName = "*"
-            SQLServerName    = "Localhost" 
+            SQLServerName    = "Localhost"
         },
         @{
             NodeName         = "local529"
             Role             = "MSSQL", "Web"
-            WebDeployURI     = "https://github.com/grayzu/BasicCI/tree/Dev/Packages/WebDeploy_amd64_en-US.msi"
-            SampleScriptURI  = "https://github.com/grayzu/BasicCI/tree/Dev/Packages/SampleData.sql"
-            WebPackageURI    = "https://github.com/grayzu/BasicCI/tree/Dev/Packages/petshop.zip"
+            WebDeployURI     = "https://petshopdata2.blob.core.windows.net/packages/WebDeploy_amd64_en-US.msi"
+            SampleScriptURI  = "https://petshopdata2.blob.core.windows.net/packages/SampleData.sql"
+            WebPackageURI    = "https://petshopdata2.blob.core.windows.net/packages/petshop.zip"
         }
     )
 }

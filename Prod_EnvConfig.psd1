@@ -2,18 +2,18 @@
     AllNodes = @(
         @{
             NodeName = "*"
-            SQLServerName   = "DD-SQL" 
+            SQLServerName   = "DD-SQL"
         },
         @{
             NodeName        = "SQL"
             Role            = "MSSQL"
-            SampleScriptURI = "https://github.com/grayzu/BasicCI/tree/Prod/Packages/SampleData.sql"
+            SampleScriptURI = "https://petshopdata2.blob.core.windows.net/packages/SampleData.sql"
         },
         @{
             NodeName        = "IIS"
             Role            = "Web"
-            WebDeployURI    = "https://github.com/grayzu/BasicCI/tree/Prod/Packages/WebDeploy_amd64_en-US.msi"
-            WebPackageURI   = "https://github.com/grayzu/BasicCI/tree/Prod/Packages/petshop.zip"
+            WebDeployURI    = "https://petshopdata2.blob.core.windows.net/packages/WebDeploy_amd64_en-US.msi"
+            WebPackageURI   = "https://petshopdata2.blob.core.windows.net/packages/petshop.zip"
         }
     )
 }
