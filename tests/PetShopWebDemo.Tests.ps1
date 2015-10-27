@@ -1,5 +1,5 @@
 Describe "Server Is Up" {
-    $ServerHostIp = '10.83.182.28'
+    #$ServerHostIp = '10.83.182.28'
     $ServerHostname = 'Local529'
 
     Context "SQL" {
@@ -26,27 +26,29 @@ Describe "Server Is Up" {
     }
     Context "Web Server" {
         It "accepts a TCP connection on port 80" {
-            $testNetConnectionResults = Test-NetConnection -ComputerName $ServerHostIp -Port 80
+            $testNetConnectionResults = Test-NetConnection -ComputerName $ServerHostname -Port 80
             $testNetConnectionResults.TcpTestSucceeded | Should Be $true
         }
         
-        $actualHomepage = Invoke-WebRequest $ServerHostIp
+        $actualHomepage = Invoke-WebRequest $ServerHostname
         It "returns a good error code" {
             $actualHomepage.StatusCode | Should Be 200
         }
         It "has the right homepage" {
-            $correctHomepage = Import-CliXml $PSScriptRoot\correctHomepage.xml
-            $result = Compare-Object $correctHomepage $actualHomepage
-            Compare-Object $correctHomepage.Content $actualHomepage.Content | Should BeNullOrEmpty
+            $rawHomepage = Invoke-WebRequest "$ServerHostname"
+            $actualHomepage = $rawHomepage.AllElements.InnerText
+            $correctHomepage = Get-Content $PSScriptRoot\correctHomepage.txt
+            ($actualHomepage -eq $correctHomepage) | Should Be $true
         }
 
         It "has all the backyard animals" {
-            $actualBackyard = Invoke-WebRequest "$ServerHostIp/Products.aspx?page=0&categoryId=BYARD"
-            $correctBackyard = Import-CliXml $PSScriptRoot\correctBackyard.xml
-            Compare-Object $correctBackyard.Content $actualBackyard.Content | Should BeNullOrEmpty
+            $rawBackyard = Invoke-WebRequest "$ServerHostname/Products.aspx?page=0&categoryId=BYARD"
+            $actualBackyard = $rawBackyard.AllElements.InnerText
+            $correctBackyard = Get-Content $PSScriptRoot\correctBackyard.txt
+            ($actualBackyard -eq $correctBackyard) | Should Be $true
         }
         It 'is selling pandas for $1,999 each' {
-            $actualPanda = Invoke-WebRequest "$ServerHostIp/Items.aspx?productId=DR-04&categoryId=EDANGER"
+            $actualPanda = Invoke-WebRequest "$ServerHostname/Items.aspx?productId=DR-04&categoryId=EDANGER"
             $actualPanda.Content -like '*$1,999*' | Should Be $true
         
         }
