@@ -37,15 +37,15 @@ Describe "Server Is Up" {
         It "has the right homepage" {
             $rawHomepage = Invoke-WebRequest "$ServerHostname"
             $actualHomepage = $rawHomepage.AllElements.InnerText
-            $correctHomepage = Get-Content $PSScriptRoot\correctHomepage.txt
-            ($actualHomepage -eq $correctHomepage) | Should Be $true
+            $correctHomepage = Import-Clixml $PSScriptRoot\correctHomepage.xml
+            $actualHomepage -eq $correctHomepage | Should BeNullOrEmpty
         }
 
         It "has all the backyard animals" {
             $rawBackyard = Invoke-WebRequest "$ServerHostname/Products.aspx?page=0&categoryId=BYARD"
             $actualBackyard = $rawBackyard.AllElements.InnerText
-            $correctBackyard = Get-Content $PSScriptRoot\correctBackyard.txt
-            ($actualBackyard -eq $correctBackyard) | Should Be $true
+            $correctBackyard = Import-Clixml $PSScriptRoot\correctBackyard.xml
+            ($actualBackyard -eq $correctBackyard) | Should BeNullOrEmpty
         }
         It 'is selling pandas for $1,999 each' {
             $actualPanda = Invoke-WebRequest "$ServerHostname/Items.aspx?productId=DR-04&categoryId=EDANGER"
