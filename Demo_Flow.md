@@ -16,7 +16,8 @@
 * Environmental vs Structural
 
 ## Development Testing (Joey)-3min
-* Pester
+* Pester, Script Analysis
+* Promote Dev to Prod
 
 ## Production Deployment (Mark)-3min
 * Multiple nodes
