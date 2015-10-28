@@ -1,4 +1,3 @@
-#Demo Days
 #DevOps Demo Flow and talking points
 ## Introduction (Mark)
 * DevOps
