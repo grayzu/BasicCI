@@ -20,24 +20,14 @@
                       }
 
         #Enable Remove Access to SQL Engine and SQL browser
-	    xFireWall RemoteAccessOnSQLBrowser
-        {
-            Name            = "SqlBrowser"
-            Ensure          = "Present"
-            Access          = "Allow"
-            State           ="Enabled"
-            ApplicationPath = "c:\Program Files\Microsoft SQL Server\90\Shared\sqlbrowser.exe"
-            Profile         = "Any"
-        }
-
         xFireWall RemoteAccessOnSQLEngine
         {
             Name            = "SqlServer"
             Ensure          = "Present"
             Access          = "Allow"
             State           = "Enabled"
-            ApplicationPath = "c:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Binn\sqlservr.exe"
-            Profile = "Any"
+            ApplicationPath = "c:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\Binn\sqlservr.exe"
+            Profile = "Private"
         }
 	          
         # Provisioning databases with some pet information
