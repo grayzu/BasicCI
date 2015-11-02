@@ -3,6 +3,7 @@
 #############################################################################
 
 #Remove all PetShop Databases
+SQLPS
 dir SQLSERVER:\SQl\dd-sql\default\databases | where name -Like 'MSPetShop*' | Remove-Item -Force -Verbose
 
 #Remove all PetShop DB accounts
