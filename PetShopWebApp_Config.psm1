@@ -19,7 +19,7 @@
                         echo "Database Caching successfully enabled. Database=MSPetShop4" >> $env:ALLUSERSPROFILE\CacheScript.txt
                       }
 
-        #Enable Remove Access to SQL Engine and SQL browser
+        #Enable Remote Access to SQL Engine and SQL browser
         xFireWall RemoteAccessOnSQLEngine
         {
             Name            = "SqlServer"
